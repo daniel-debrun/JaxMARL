@@ -215,6 +215,17 @@ class Layout:
             raise ValueError("At least one agent position must be provided")
         if self.num_ingredients < 1:
             raise ValueError("At least one ingredient must be available")
+        border = np.concatenate(
+            [
+                self.static_objects[[0, -1], :].ravel(),
+                self.static_objects[:, [0, -1]].ravel(),
+            ]
+        )
+        if (border == StaticObject.EMPTY).any():
+            raise ValueError(
+                "The layout border must not be walkable (walls, counters, piles, pots, goals): an agent on the "
+                "edge facing out would interact with the far side of the map"
+            )
         if self.possible_recipes is None:
             self.possible_recipes = self._get_all_possible_recipes(self.num_ingredients)
 

@@ -1202,6 +1202,9 @@ class OvercookedV2(MultiAgentEnv):
         """Assume agent took interact actions. Result depends on what agent is facing and what it is holding."""
 
         inventory = agent.inventory
+        # Not bounds-checked: Layout rejects walkable border cells, so the cell
+        # in front is always on the map (facing out of the top or left edge
+        # would otherwise wrap to the far side).
         fwd_pos = agent.get_fwd_pos()
 
         shaped_reward = jnp.array(0, dtype=float)
